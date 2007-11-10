@@ -1,22 +1,24 @@
-Summary:	HTTP library of common code
-Name:		w3c-libwww
-Version:	5.4.0
-Release:	%mkrel 8
-License:	W3C License
-Group:		System/Libraries
-URL:		http://www.w3.org/Library
-Source0:	http://www.w3.org/Library/Distribution/%{name}-%{version}.tar.bz2
-Patch0:		w3c-libwww-5.3.2-lib64.patch
-Patch1:		w3c-libwww-5.3.2-incdir.patch
-Patch2:		w3c-libwww-ppc64.patch
-Patch3:		w3c-libwww-autostar.patch
-Patch4:		w3c-libwww-5.4.0-htbound.patch
-BuildRequires:	zlib-devel openssl-devel
+Name:           w3c-libwww
+Version:        5.4.0
+Release:        %mkrel 9
+Summary:        HTTP library of common code
+License:        W3C License
+Group:          System/Libraries
+URL:            http://www.w3.org/Library
+Source0:        http://www.w3.org/Library/Distribution/w3c-libwww-%{version}.tgz
+Source1:        http://www.w3.org/Library/Distribution/w3c-libwww-%{version}.tgz.md5
+Patch0:         w3c-libwww-5.3.2-lib64.patch
+Patch1:         w3c-libwww-5.3.2-incdir.patch
+Patch2:         w3c-libwww-ppc64.patch
+Patch3:         w3c-libwww-autostar.patch
+Patch4:         w3c-libwww-5.4.0-htbound.patch
+BuildRequires:  zlib-devel
+BuildRequires:  openssl-devel
 BuildRequires:  multiarch-utils >= 1.0.4-1mdk
 %if %mdkversion >= 1010
-BuildRequires:	automake1.4
+BuildRequires:  automake1.4
 %endif
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 Libwww is a general-purpose Web API written in C for Unix and Windows (Win32).
@@ -28,21 +30,21 @@ Internet protocols and to serve as a testbed for protocol experiments.
 See: http://www.w3.org/Consortium/Legal/copyright-software.html for
 further information on its license.
 
-%package	devel
-Summary:	Libraries and header files for programs that use libwww
-Group:		Development/Other
-Requires:	%{name} = %{version}-%{release}
+%package devel
+Summary:        Libraries and header files for programs that use libwww
+Group:          Development/Other
+Requires:       %{name} = %{version}-%{release}
 
-%description	devel
+%description devel
 Static libraries and header files for libwww, which are available as public
 libraries.
 
-%package	apps
-Summary:	Applications built using Libwww web library: e.g. Robot, etc
-Group:		Networking/WWW
-Requires:	%{name} = %{version}-%{release}
+%package apps
+Summary:        Applications built using Libwww web library: e.g. Robot, etc
+Group:          Networking/WWW
+Requires:       %{name} = %{version}-%{release}
 
-%description	apps
+%description apps
 Web applications built using Libwww: Robot, Command line tool, 
 line mode browser.  The Robot can crawl web sites faster, and
 with lower load, than any other web walker that we know of, 
@@ -57,7 +59,6 @@ often useful to convert to ascii text.  Currently unavailable
 until someone updates it to some new interfaces. (hint, hint...)
 
 %prep
-
 %setup -q
 %patch0 -p1 -b .lib64
 %patch1 -p1
@@ -77,19 +78,18 @@ touch Library/User/Extrnals.html
 chmod 644 `find -name \*.gif`
 
 %build
-%configure \
+%{configure2_5x} \
     --enable-shared \
     --with-gnu-ld \
     --with-regex \
     --with-zlib \
     --with-ssl \
     --with-md5
-%make
+%{make}
 
 %install
 rm -rf %{buildroot}
-
-%makeinstall_std
+%{makeinstall_std}
 
 %multiarch_binaries %{buildroot}%{_bindir}/libwww-config
 %multiarch_includes %{buildroot}%{_includedir}/wwwconf.h
@@ -129,5 +129,3 @@ rm -rf %{buildroot}
 %{_includedir}/*.h
 %dir %{_includedir}/w3c-libwww
 %{_includedir}/w3c-libwww/*.h
-
-
