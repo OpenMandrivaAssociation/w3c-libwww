@@ -18,7 +18,6 @@ BuildRequires:  multiarch-utils >= 1.0.4-1mdk
 %if %mdkversion >= 1010
 BuildRequires:  automake1.4
 %endif
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 Libwww is a general-purpose Web API written in C for Unix and Windows (Win32).
