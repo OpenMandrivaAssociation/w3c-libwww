@@ -94,9 +94,13 @@ rm -rf %{buildroot}
 %multiarch_binaries %{buildroot}%{_bindir}/libwww-config
 %multiarch_includes %{buildroot}%{_includedir}/wwwconf.h
 
+%if %mdkversion < 200900
 %post -p /sbin/ldconfig
+%endif
 
+%if %mdkversion < 200900
 %postun -p /sbin/ldconfig
+%endif
 
 %clean
 rm -rf %{buildroot}
