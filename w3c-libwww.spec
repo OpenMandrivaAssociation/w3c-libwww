@@ -1,6 +1,6 @@
 Name:           w3c-libwww
 Version:        5.4.0
-Release:        %mkrel 9
+Release:        %mkrel 10
 Summary:        HTTP library of common code
 License:        W3C License
 Group:          System/Libraries
