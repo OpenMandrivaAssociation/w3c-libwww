@@ -1,23 +1,28 @@
-Name:           w3c-libwww
-Version:        5.4.0
-Release:        %mkrel 10
+%define _disable_ld_as_needed 1
+%define _disable_ld_no_undefined 1
+
+%define snap 20061204
+
 Summary:        HTTP library of common code
+Name:           w3c-libwww
+Version:        5.4.1
+Release:        %mkrel 0.%{snap}.1
 License:        W3C License
 Group:          System/Libraries
 URL:            http://www.w3.org/Library
-Source0:        http://www.w3.org/Library/Distribution/w3c-libwww-%{version}.tgz
-Source1:        http://www.w3.org/Library/Distribution/w3c-libwww-%{version}.tgz.md5
-Patch0:         w3c-libwww-5.3.2-lib64.patch
-Patch1:         w3c-libwww-5.3.2-incdir.patch
-Patch2:         w3c-libwww-ppc64.patch
-Patch3:         w3c-libwww-autostar.patch
-Patch4:         w3c-libwww-5.4.0-htbound.patch
-BuildRequires:  zlib-devel
+Source0:        http://www.w3.org/Library/Distribution/w3c-libwww-%{version}-%{snap}.tar.gz
+Patch0:		w3c-libwww-configure.patch
+Patch1:		w3c-libwww-5.3.2-incdir.patch
+Patch2:		w3c-libwww-ppc64.patch
+Patch3:		w3c-libwww-md5.patch
+Patch4:		w3c-libwww-expat.patch
+Patch5:		w3c-libwww-lib64.diff
+BuildRequires:	autoconf2.5
+BuildRequires:	automake
+BuildRequires:	expat-devel
+BuildRequires:	libtool
 BuildRequires:  openssl-devel
-BuildRequires:  multiarch-utils >= 1.0.4-1mdk
-%if %mdkversion >= 1010
-BuildRequires:  automake1.4
-%endif
+BuildRequires:  zlib-devel
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -59,40 +64,59 @@ often useful to convert to ascii text.  Currently unavailable
 until someone updates it to some new interfaces. (hint, hint...)
 
 %prep
-%setup -q
-%patch0 -p1 -b .lib64
-%patch1 -p1
-%patch2 -p1 -b .ppc64
-%patch3 -p1 -b .autostar
-%patch4 -p1 -b .can-2005-3183
 
-export FORCE_AUTOCONF_2_5=1
+%setup -q
+
+#cvs -d :pserver:anonymous@dev.w3.org:/sources/public login
+#after which you type "anonymous" as password.
+#cvs -d :pserver:anonymous@dev.w3.org:/sources/public -z3 checkout libwww
+
+find . -type d -perm 0700 -exec chmod 755 {} \;
+find . -type f -perm 0555 -exec chmod 755 {} \;
+find . -type f -perm 0544 -exec chmod 644 {} \;
+find . -type f -perm 0444 -exec chmod 644 {} \;
+		
+for i in `find . -type d -name CVS` `find . -type f -name .cvs\*` `find . -type f -name .#\*`; do
+    if [ -e "$i" ]; then rm -rf $i; fi >&/dev/null
+done
+
+%patch0 -p1
+%patch1 -p1 
+%patch2 -p1 -b .ppc64
+%patch3 -p0
+%patch4 -p1
+%patch5 -p0
+
+# we don't want the libwww version
+rm -rf modules/expat
+
+#perl config/winConfigure.pl
 libtoolize -c -f
 aclocal
+autoheader
 automake --add-missing
 autoconf
-autoheader
-
 echo timestamp > stamp-h.in
-touch Library/User/Extrnals.html
-chmod 644 `find -name \*.gif`
 
 %build
-%{configure2_5x} \
+
+%configure2_5x \
     --enable-shared \
+    --disable-static \
     --with-gnu-ld \
     --with-regex \
     --with-zlib \
     --with-ssl \
-    --with-md5
-%{make}
+    --enable-reentrant
+
+%make
 
 %install
 rm -rf %{buildroot}
-%{makeinstall_std}
+
+%makeinstall_std
 
 %multiarch_binaries %{buildroot}%{_bindir}/libwww-config
-%multiarch_includes %{buildroot}%{_includedir}/wwwconf.h
 
 %if %mdkversion < 200900
 %post -p /sbin/ldconfig
@@ -110,7 +134,6 @@ rm -rf %{buildroot}
 %doc *.html  Icons/*/*.gif
 %{_libdir}/libpics*.so.*
 %{_libdir}/libwww*.so.*
-%{_libdir}/libxml*.so.*
 %{_libdir}/libmd5.so.*
 %{_datadir}/w3c-libwww
 
@@ -126,10 +149,7 @@ rm -rf %{buildroot}
 %doc COPYRIGH
 %multiarch %{_bindir}/multiarch-*-linux/libwww-config
 %{_bindir}/libwww-config
-%{_libdir}/lib*.a
 %{_libdir}/lib*.la
 %{_libdir}/lib*.so
-%multiarch %{_includedir}/multiarch-*-linux/wwwconf.h
-%{_includedir}/*.h
 %dir %{_includedir}/w3c-libwww
 %{_includedir}/w3c-libwww/*.h
