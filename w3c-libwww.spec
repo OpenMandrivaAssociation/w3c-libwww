@@ -12,7 +12,7 @@ Group:          System/Libraries
 URL:            http://www.w3.org/Library
 Source0:        http://www.w3.org/Library/Distribution/w3c-libwww-%{version}-%{snap}.tar.gz
 Patch0:		w3c-libwww-configure.patch
-Patch1:		w3c-libwww-5.3.2-incdir.patch
+Patch1:		w3c-libwww-5.4.1-incdir.patch
 Patch2:		w3c-libwww-ppc64.patch
 Patch3:		w3c-libwww-md5.patch
 Patch4:		w3c-libwww-expat.patch
@@ -81,7 +81,7 @@ for i in `find . -type d -name CVS` `find . -type f -name .cvs\*` `find . -type 
 done
 
 %patch0 -p1
-%patch1 -p1 
+%patch1 -p1
 %patch2 -p1 -b .ppc64
 %patch3 -p0
 %patch4 -p1
