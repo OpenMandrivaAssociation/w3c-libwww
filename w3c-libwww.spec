@@ -17,6 +17,7 @@ Patch2:		w3c-libwww-ppc64.patch
 Patch3:		w3c-libwww-md5.patch
 Patch4:		w3c-libwww-expat.patch
 Patch5:		w3c-libwww-lib64.diff
+Patch6:		w3c-libwww-5.4.1-fix-install.patch
 BuildRequires:	autoconf2.5
 BuildRequires:	automake
 BuildRequires:	expat-devel
@@ -86,6 +87,7 @@ done
 %patch3 -p0
 %patch4 -p1
 %patch5 -p0
+%patch6 -p0
 
 # we don't want the libwww version
 rm -rf modules/expat
