@@ -1,6 +1,3 @@
-%define _disable_ld_as_needed 1
-%define _disable_ld_no_undefined 1
-
 %define snap 20061204
 
 Summary:        HTTP library of common code
@@ -18,6 +15,7 @@ Patch3:		w3c-libwww-md5.patch
 Patch4:		w3c-libwww-expat.patch
 Patch5:		w3c-libwww-lib64.diff
 Patch6:		w3c-libwww-5.4.1-fix-install.patch
+Patch7:		w3c-libwww-5.4.1-fix-link.patch
 BuildRequires:	autoconf2.5
 BuildRequires:	automake
 BuildRequires:	expat-devel
@@ -88,20 +86,14 @@ done
 %patch4 -p1
 %patch5 -p0
 %patch6 -p0
+%patch7 -p0 -b .link
 
 # we don't want the libwww version
 rm -rf modules/expat
 
-#perl config/winConfigure.pl
-libtoolize -c -f
-aclocal
-autoheader
-automake --add-missing
-autoconf
-echo timestamp > stamp-h.in
-
 %build
-
+autoreconf -fi
+echo timestamp > stamp-h.in
 %configure2_5x \
     --enable-shared \
     --disable-static \
