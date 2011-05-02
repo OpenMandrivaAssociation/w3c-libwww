@@ -3,7 +3,7 @@
 Summary:        HTTP library of common code
 Name:           w3c-libwww
 Version:        5.4.1
-Release:        %mkrel 0.%{snap}.6
+Release:        %mkrel 0.%{snap}.7
 License:        W3C License
 Group:          System/Libraries
 URL:            http://www.w3.org/Library
@@ -141,8 +141,8 @@ rm -rf %{buildroot}
 %files devel
 %defattr(-,root,root)
 %doc COPYRIGH
-%multiarch %{_bindir}/multiarch-*-linux/libwww-config
 %{_bindir}/libwww-config
+%{multiarch_bindir}/libwww-config
 %{_libdir}/lib*.la
 %{_libdir}/lib*.so
 %dir %{_includedir}/w3c-libwww
