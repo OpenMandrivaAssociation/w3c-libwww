@@ -1,0 +1,198 @@
+--- Library/src/Makefile.am.link	2010-04-08 16:35:51.000000000 +0200
++++ Library/src/Makefile.am	2010-04-08 16:35:51.000000000 +0200
+@@ -33,7 +33,7 @@
+         libwwwdav.la \
+ 	libwwwsql.la
+ 
+-SUBDIRS = SSL windows vms
++SUBDIRS = . SSL windows vms
+ 
+ #	.h files are distributed but originally are made from the
+ #	self-documenting hypertext files.
+@@ -80,6 +80,7 @@
+ 	HTUU.h \
+ 	HTUU.c
+ 
++libwwwcore_la_LIBADD = libwwwutils.la
+ libwwwcore_la_SOURCES = \
+ 	WWWCore.h \
+ 	HTAlert.h \
+@@ -144,6 +145,7 @@
+ 	HTWWWStr.h \
+ 	HTWWWStr.c
+ 
++libwwwtrans_la_LIBADD = libwwwcore.la
+ libwwwtrans_la_SOURCES = \
+ 	WWWTrans.h \
+ 	HTANSI.h \
+@@ -159,6 +161,7 @@
+ 	HTWriter.h \
+ 	HTWriter.c
+ 
++libwwwstream_la_LIBADD = libwwwfile.la
+ libwwwstream_la_SOURCES = \
+ 	WWWStream.h \
+ 	HTConLen.h \
+@@ -182,22 +185,23 @@
+ 	HTXParse.h \
+ 	HTXParse.c
+ 
++libwwwcache_la_LIBADD = libwwwtrans.la
+ libwwwcache_la_SOURCES = \
+ 	WWWCache.h \
+ 	HTCache.h \
+ 	HTCache.c
+ 
++libwwwfile_la_LIBADD = libwwwtrans.la libwwwdir.la
+ libwwwfile_la_SOURCES = \
+ 	WWWFile.h \
+ 	HTBInit.h \
+ 	HTBInit.c \
+-	HTBind.h \
+-	HTBind.c \
+ 	HTFile.h \
+ 	HTFile.c \
+ 	HTMulti.h \
+ 	HTMulti.c
+ 
++libwwwftp_la_LIBADD = libwwwcore.la libwwwdir.la
+ libwwwftp_la_SOURCES = \
+ 	WWWFTP.h \
+ 	HTFTP.h \
+@@ -205,11 +209,13 @@
+ 	HTFTPDir.h \
+ 	HTFTPDir.c
+ 
++libwwwgopher_la_LIBADD = libwwwhtml.la libwwwdir.la
+ libwwwgopher_la_SOURCES = \
+ 	WWWGophe.h \
+ 	HTGopher.h \
+ 	HTGopher.c
+ 
++libwwwmime_la_LIBADD = libwwwhtml.la libwwwstream.la libwwwcache.la
+ libwwwmime_la_SOURCES = \
+ 	WWWMIME.h \
+ 	HTBound.h \
+@@ -226,6 +232,7 @@
+ 	HTMIMImp.c \
+ 	HTMulpar.h
+ 
++libwwwhttp_la_LIBADD = libwwwmime.la ../../modules/md5/libmd5.la
+ libwwwhttp_la_SOURCES = \
+ 	WWWHTTP.h \
+ 	HTTPUtil.h \
+@@ -252,9 +259,7 @@
+ 	HTPEP.h \
+ 	HTPEP.c
+ 
+-libwwwhttp_la_DEPENDENCIES = \
+-	../../modules/md5/libmd5.la
+-
++libwwwnews_la_LIBADD = libwwwmime.la
+ libwwwnews_la_SOURCES = \
+ 	WWWNews.h \
+ 	HTNDir.h \
+@@ -266,6 +271,7 @@
+ 	HTNewsRq.h \
+ 	HTNewsRq.c
+ 
++libwwwtelnet_la_LIBADD = libwwwmime.la libwwwdir.la
+ libwwwtelnet_la_SOURCES = \
+ 	WWWTelnt.h \
+ 	HTTelnet.h \
+@@ -280,6 +286,7 @@
+ 
+ libwwwwais_la_LDFLAGS = -rpath $(libdir)
+ 
++libwwwhtml_la_LIBADD = libwwwcore.la
+ libwwwhtml_la_SOURCES = \
+ 	WWWHTML.h \
+ 	HTMLPDTD.h \
+@@ -302,15 +309,21 @@
+ 	HTStyle.h \
+ 	HTStyle.c
+ 
++libwwwdir_la_LIBADD = libwwwcore.la libwwwhtml.la
+ libwwwdir_la_SOURCES = \
+ 	WWWDir.h \
+ 	HTIcons.h \
+ 	HTIcons.c \
++	HTBind.h \
++	HTBind.c \
+ 	HTDescpt.h \
+ 	HTDescpt.c \
+ 	HTDir.h \
+ 	HTDir.c
+ 
++libwwwapp_la_LIBADD = libwwwdir.la libwwwmime.la libwwwgopher.la \
++		      libwwwhttp.la libwwwtelnet.la libwwwnews.la libwwwftp.la \
++		      @WWWXML@ @WWWZIP@
+ libwwwapp_la_SOURCES = \
+ 	WWWApp.h \
+ 	HTAccess.h \
+@@ -334,11 +347,13 @@
+ 	HTRules.h \
+ 	HTRules.c
+ 
++libwwwinit_la_LIBADD = libwwwfile.la libwwwapp.la
+ libwwwinit_la_SOURCES = \
+ 	WWWInit.h \
+ 	HTProfil.h \
+ 	HTProfil.c
+ 
++libwwwmux_la_LIBADD = libwwwstream.la
+ libwwwmux_la_SOURCES = \
+ 	WWWMux.h \
+ 	HTDemux.h \
+@@ -362,8 +377,10 @@
+ 	HTXML.h \
+ 	HTXML.c
+ 
+-libwwwxml_la_LDFLAGS = -lexpat -rpath $(libdir)
++libwwwxml_la_LDFLAGS = -rpath $(libdir)
++libwwwxml_la_LIBADD = -lexpat libwwwstream.la
+ 
++libwwwzip_la_LIBADD = libwwwstream.la
+ libwwwzip_la_SOURCES = \
+ 	WWWZip.h \
+ 	HTZip.h \
+@@ -380,6 +397,7 @@
+ 	HTSQLLog.h \
+ 	HTSQLLog.c
+ 
++libwwwsql_la_LIBADD = $(MYSQL_LIBS)
+ libwwwsql_la_LDFLAGS = -rpath $(libdir) $(MYSQL_LIBS)
+ 
+ INCLUDES = \
+--- Library/src/SSL/Makefile.am.link	2003-03-21 11:15:44.000000000 +0100
++++ Library/src/SSL/Makefile.am	2010-04-08 16:35:51.000000000 +0200
+@@ -27,6 +27,7 @@
+ inc: $(BUILT_SOURCES)
+ 	@echo Generated built sources
+ 
++libwwwssl_la_LIBADD = ../libwwwapp.la
+ libwwwssl_la_SOURCES = \
+ 	WWWSSL.h \
+ 	HTSSL.h \
+--- PICS-client/src/Makefile.am.link	2000-08-04 11:48:37.000000000 +0200
++++ PICS-client/src/Makefile.am	2010-04-08 16:35:51.000000000 +0200
+@@ -24,6 +24,7 @@
+ inc: $(BUILT_SOURCES)
+ 	@echo Generated built sources
+ 
++libpics_la_LIBADD = ../../Library/src/libwwwapp.la
+ libpics_la_SOURCES = \
+ 	CSChkLab.c	CSStream.c	CSKwik.c \
+ 	CSLabel.c	CSLLOut.c	CSLLURLs.c \
+--- config/winConfigure.pl.link	2010-04-08 16:54:06.000000000 +0200
++++ config/winConfigure.pl	2010-04-08 16:55:35.000000000 +0200
+@@ -82,7 +82,9 @@
+     }
+     my $subdir;
+     foreach $subdir (@{$DEFS{'SUBDIRS'}}) {
++	if ($subdir ne '.') {
+ 	&checkDir($dir.'/'.$subdir);
++	}
+     }
+ }
+ 

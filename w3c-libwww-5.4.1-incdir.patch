@@ -1,0 +1,15 @@
+--- w3c-libwww-5.4.1/libwww-config.in.orig	2005-03-10 04:16:05.000000000 +0100
++++ w3c-libwww-5.4.1/libwww-config.in	2009-04-13 03:38:41.000000000 +0200
+@@ -45,7 +45,11 @@
+       echo @VERSION@
+       ;;
+     --cflags)
+-      echo -I@includedir@ -I@includedir@/@PACKAGE@ @DEFS@
++      if [ "@includedir@" != "@prefix@/include" ]; then
++          echo -I@includedir@ -I@includedir@/@PACKAGE@ @DEFS@
++      else
++          echo -I@includedir@/@PACKAGE@ @DEFS@
++      fi
+       ;;
+     --libs)
+       echo -L@libdir@ @LWWWZIP@ @LWWWWAIS@ @LWWWSQL@ -lwwwinit -lwwwapp @LWWWXML@ -lwwwhtml -lwwwtelnet -lwwwnews -lwwwhttp -lwwwmime -lwwwgopher -lwwwftp -lwwwfile -lwwwdir -lwwwcache -lwwwstream -lwwwmux -lwwwtrans -lwwwcore -lwwwutils @LWWWMD5@ @LWWWSSL@ @LIBS@ 

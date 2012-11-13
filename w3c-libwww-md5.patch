@@ -1,0 +1,11 @@
+--- modules/md5/md5.h.orig	2006-04-22 02:25:32.000000000 +0200
++++ modules/md5/md5.h	2006-04-22 02:25:54.000000000 +0200
+@@ -42,7 +42,7 @@
+ typedef unsigned short int UINT2;
+ 
+ /* UINT4 defines a four byte word */
+-typedef unsigned long int UINT4;
++typedef unsigned int UINT4;
+ 
+ /* PROTO_LIST is defined depending on how PROTOTYPES is defined above.
+    If using PROTOTYPES, then PROTO_LIST returns the list, otherwise it

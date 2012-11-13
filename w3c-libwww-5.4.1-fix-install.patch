@@ -1,0 +1,10 @@
+--- Library/src/Makefile.am~	2009-10-03 18:06:46.000000000 +0200
++++ Library/src/Makefile.am	2009-10-03 18:07:53.000000000 +0200
+@@ -402,7 +402,6 @@
+ 	HTBInit.h \
+ 	HTBTree.h \
+ 	HTBind.h \
+-	HTBind.h \
+ 	HTBound.h \
+ 	HTBufWrt.h \
+ 	HTCache.h \
