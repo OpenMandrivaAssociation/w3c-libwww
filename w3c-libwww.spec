@@ -3,7 +3,7 @@
 Summary:        HTTP library of common code
 Name:           w3c-libwww
 Version:        5.4.1
-Release:        %mkrel 0.%{snap}.7
+Release:        %mkrel 0.%{snap}.8
 License:        W3C License
 Group:          System/Libraries
 URL:            http://www.w3.org/Library
@@ -143,7 +143,88 @@ rm -rf %{buildroot}
 %doc COPYRIGH
 %{_bindir}/libwww-config
 %{multiarch_bindir}/libwww-config
-%{_libdir}/lib*.la
 %{_libdir}/lib*.so
 %dir %{_includedir}/w3c-libwww
 %{_includedir}/w3c-libwww/*.h
+
+
+%changelog
+* Mon May 02 2011 Oden Eriksson <oeriksson@mandriva.com> 5.4.1-0.20061204.7mdv2011.0
++ Revision: 661754
+- multiarch fixes
+
+* Sat Dec 04 2010 Oden Eriksson <oeriksson@mandriva.com> 5.4.1-0.20061204.6mdv2011.0
++ Revision: 608149
+- rebuild
+
+* Thu Apr 08 2010 Funda Wang <fwang@mandriva.org> 5.4.1-0.20061204.5mdv2010.1
++ Revision: 533061
+- bump rel
+- finally fix linkage with newer flags
+
+* Thu Apr 08 2010 Eugeni Dodonov <eugeni@mandriva.com> 5.4.1-0.20061204.4mdv2010.1
++ Revision: 533058
+- Rebuild for new openssl
+
+  + Funda Wang <fwang@mandriva.org>
+    - rebuild
+
+* Fri Feb 26 2010 Oden Eriksson <oeriksson@mandriva.com> 5.4.1-0.20061204.2mdv2010.1
++ Revision: 511657
+- rebuilt against openssl-0.9.8m
+
+* Sat Oct 03 2009 Funda Wang <fwang@mandriva.org> 5.4.1-0.20061204.1mdv2010.0
++ Revision: 453220
+- fix installation
+
+* Mon Apr 13 2009 Funda Wang <fwang@mandriva.org> 5.4.1-0.20061204.1mdv2009.1
++ Revision: 366570
+- rediff incdir patch
+
+* Fri Jul 11 2008 Oden Eriksson <oeriksson@mandriva.com> 5.4.1-0.20061204.1mdv2009.0
++ Revision: 233675
+- 5.4.1-20061204 (partly synced with w3c-libwww-5.4.1-0.10.20060206cvs.fc9.src.rpm)
+- use both _disable_ld_as_needed and _disable_ld_no_undefined due to ugly autopoo
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - rebuild
+    - kill re-definition of %%buildroot on Pixel's request
+
+  + Pixel <pixel@mandriva.com>
+    - do not call ldconfig in %%post/%%postun, it is now handled by filetriggers
+
+  + Olivier Blin <oblin@mandriva.com>
+    - restore BuildRoot
+
+* Sat Nov 10 2007 David Walluck <walluck@mandriva.org> 5.4.0-9mdv2008.1
++ Revision: 107393
+- add correct sources
+- call %%{configure2_5x}
+- use upstream sources
+
+
+* Sat Mar 17 2007 Oden Eriksson <oeriksson@mandriva.com> 5.4.0-8mdv2007.1
++ Revision: 145611
+- Import w3c-libwww
+
+* Sat Mar 17 2007 Oden Eriksson <oeriksson@mandriva.com> 5.4.0-8mdv2007.1
+- use the %%mrel macro
+- bunzip patches
+
+* Wed Nov 16 2005 Thierry Vignaud <tvignaud@mandriva.com> 5.4.0-7mdk
+- security update for CAN-2005-3183 (P4)
+
+* Mon Nov 14 2005 Oden Eriksson <oeriksson@mandriva.com> 5.4.0-6mdk
+- rebuilt against openssl-0.9.8a
+
+* Mon Jan 31 2005 Thierry Vignaud <tvignaud@mandrakesoft.com> 5.4.0-5mdk
+- fix build with new rpm
+
+* Sat Dec 25 2004 Per Øyvind Karlsen <peroyvind@linux-mandrake.com> 5.4.0-4mdk
+- sync with fedora to get things rebuilding
+- fix summary-ended-with-dot
+- cosmetics
+
+* Tue Sep 21 2004 Gwenole Beauchesne <gbeauchesne@mandrakesoft.com> 5.4.0-3mdk
+- use automake 1.4
+
